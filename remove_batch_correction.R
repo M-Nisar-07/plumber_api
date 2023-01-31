@@ -1,11 +1,15 @@
+library(jsonlite)
+library(plumber)
 library(limma)
-x <- read.csv("D:/limma/quantile_norm.csv")
-y <-log2(x)
 
-write.csv(x,"mmmmmffffffffmmmmmmName.csv")
-
-as.matrix(y)
-print(y)
-batch <- c("A","B","C","A","B","C","A","B","C","A","B","C","A","B","C","A","B","C","A","B","C","A","B","C","A","B","C","A","B","C")
-y2 <- removeBatchEffect(y, batch)
-  
+#* @post /operation
+#* @param values
+#* @param batches
+function(values, batches) {
+  rawValues <- fromJSON(values)
+  btc <- fromJSON(batches)
+  df <- data.frame(rawValues)
+  as.matrix(df)
+  batch <- c(btc)
+  removeBatchEffect(df, batch)
+}
